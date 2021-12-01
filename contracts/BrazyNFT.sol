@@ -28,7 +28,13 @@ contract BrazyNFT is ERC721URIStorage {
         _safeMint(msg.sender, newItemId);
 
         // Set NFT data
-        _setTokenURI(newItemId, "Hello Hello");
+        _setTokenURI(newItemId, "https://jsonkeeper.com/b/44TU");
+
+        console.log(
+            "An NFT w/ ID %s has beed minted to %s",
+            newItemId,
+            msg.sender
+        );
 
         // Increment counter to allow next NFT to be minted
         _tokenIds.increment();
