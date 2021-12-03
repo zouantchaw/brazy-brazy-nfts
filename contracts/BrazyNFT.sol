@@ -3,6 +3,7 @@
 pragma solidity ^0.8.0;
 
 // Import OpenZepplin contracts
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
@@ -48,6 +49,49 @@ contract BrazyNFT is ERC721URIStorage {
     // Pass in NFTs token and symbol
     constructor() ERC721("COWNFT", "MOOOO") {
         console.log("Hello from smart contact");
+    }
+
+    // Functions to randomly pick a word from string array
+    function pickRandomFirstWord(uint256 tokenId)
+        public
+        view
+        returns (string memory)
+    {
+        // seed random generator
+        uint256 rand = random(
+            string(abi.encodePacked("FIRST_WORD", Strings.toString(tokenId)))
+        );
+        // Remove # between 0 and the length of the array to avoid going out of bounds.
+        rand = rand % firstWords.length;
+        return firstWords[rand];
+    }
+
+    function pickRandomSecondWord(uint256 tokenId)
+        public
+        view
+        returns (string memory)
+    {
+        uint256 rand = random(
+            string(abi.encodePacked("SECOND_WORD", Strings.toString(tokenId)))
+        );
+        rand = rand % secondWords.length;
+        return secondWords[rand];
+    }
+
+    function pickRandomThirdWord(uint256 tokenId)
+        public
+        view
+        returns (string memory)
+    {
+        uint256 rand = random(
+            string(abi.encodePacked("THIRD_WORD", Strings.toString(tokenId)))
+        );
+        rand = rand % thirdWords.length;
+        return thirdWords[rand];
+    }
+
+    function random(string memory input) internal pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(input)));
     }
 
     // When invoked, creates NFT for user
