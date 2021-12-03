@@ -19,6 +19,32 @@ contract BrazyNFT is ERC721URIStorage {
     string baseSvg =
         "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' style='fill:#fff;font-family:serif;font-size:14px'></text></svg>";
 
+    // Three string arrays that will be used for svg content
+    string[] firstWords = [
+        "Naruto",
+        "Kakashi",
+        "Sotoglo",
+        "Biju",
+        "TenTails",
+        "Seahorse"
+    ];
+    string[] secondWords = [
+        "Shamuri",
+        "Sand",
+        "Dave",
+        "9Tails",
+        "8Tails",
+        "WTF"
+    ];
+    string[] thirdWords = [
+        "Reniggan",
+        "Goku",
+        "Vegeta",
+        "Sasulri",
+        "Biakugan",
+        "BlueEyes"
+    ];
+
     // Pass in NFTs token and symbol
     constructor() ERC721("COWNFT", "MOOOO") {
         console.log("Hello from smart contact");
