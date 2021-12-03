@@ -18,7 +18,7 @@ contract BrazyNFT is ERC721URIStorage {
     // baseSvg variable that all NFTs can use
     // Dynamic, can change words being displayed
     string baseSvg =
-        "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' style='fill:#fff;font-family:serif;font-size:14px'></text></svg>";
+        "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' style='fill:#fff;font-family:serif;font-size:14px'>";
 
     // Three string arrays that will be used for svg content
     string[] firstWords = [
@@ -99,22 +99,33 @@ contract BrazyNFT is ERC721URIStorage {
         // Get current tokenId
         uint256 newItemId = _tokenIds.current();
 
+        // Get one word for each of three arrays.
+        string memory first = pickRandomFirstWord(newItemId);
+        string memory second = pickRandomSecondWord(newItemId);
+        string memory third = pickRandomThirdWord(newItemId);
+
+        // Use concatenation to create final svg
+        string memory finalSvg = string(
+            abi.encodePacked(baseSvg, first, second, third, "</text></svg>")
+        );
+
+        console.log("n------------------");
+        console.log(finalSvg);
+        console.log("-------------------\n");
+
         // Mint NFT to sender
         _safeMint(msg.sender, newItemId);
 
         // Set NFT data
-        _setTokenURI(
-            newItemId,
-            "data:application/json;base64,ewogICAgIm5hbWUiOiAiR290IE1pbGsiLAogICAgImRlc2NyaXB0aW9uIjogIkdvdCBNaWxrIFByb2R1Y3Rpb25zLi4uIiwKICAgICJpbWFnZSI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSEJ5WlhObGNuWmxRWE53WldOMFVtRjBhVzg5SW5oTmFXNVpUV2x1SUcxbFpYUWlJSFpwWlhkQ2IzZzlJakFnTUNBek5UQWdNelV3SWo0OGNtVmpkQ0IzYVdSMGFEMGlNVEF3SlNJZ2FHVnBaMmgwUFNJeE1EQWxJaTgrUEhSbGVIUWdlRDBpTlRBbElpQjVQU0kxTUNVaUlHUnZiV2x1WVc1MExXSmhjMlZzYVc1bFBTSnRhV1JrYkdVaUlIUmxlSFF0WVc1amFHOXlQU0p0YVdSa2JHVWlJSE4wZVd4bFBTSm1hV3hzT2lObVptWTdabTl1ZEMxbVlXMXBiSGs2YzJWeWFXWTdabTl1ZEMxemFYcGxPakUwY0hnaVBrZHZkRTFwYkdzOEwzUmxlSFErUEM5emRtYysiCn0="
-        );
+        _setTokenURI(newItemId, "blah");
+
+        // Increment counter to allow next NFT to be minted
+        _tokenIds.increment();
 
         console.log(
             "An NFT w/ ID %s has beed minted to %s",
             newItemId,
             msg.sender
         );
-
-        // Increment counter to allow next NFT to be minted
-        _tokenIds.increment();
     }
 }
