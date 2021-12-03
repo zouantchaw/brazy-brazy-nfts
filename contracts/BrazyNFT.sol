@@ -8,6 +8,9 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "hardhat/console.sol";
 
+// Import helper functions from Base64.sol
+import {Base64} from "./libraries/Base64.sol";
+
 // Inherit contract imported from OpenZepplin,
 // giving BrazyNFT inherited contract methods
 contract BrazyNFT is ERC721URIStorage {
@@ -103,21 +106,46 @@ contract BrazyNFT is ERC721URIStorage {
         string memory first = pickRandomFirstWord(newItemId);
         string memory second = pickRandomSecondWord(newItemId);
         string memory third = pickRandomThirdWord(newItemId);
+        string memory combinedWord = string(
+            abi.encodePacked(first, second, third)
+        );
 
         // Use concatenation to create final svg
         string memory finalSvg = string(
-            abi.encodePacked(baseSvg, first, second, third, "</text></svg>")
+            abi.encodePacked(baseSvg, combinedWord, "</text></svg>")
+        );
+
+        // Set JSON metadata and base64 encode it
+        string memory json = Base64.encode(
+            bytes(
+                string(
+                    abi.encodePacked(
+                        '{"name": "',
+                        // We set the title of our NFT as the generated word.
+                        combinedWord,
+                        '", "description": "A highly acclaimed collection of squares.", "image": "data:image/svg+xml;base64,',
+                        // We add data:image/svg+xml;base64 and then append our base64 encode our svg.
+                        Base64.encode(bytes(finalSvg)),
+                        '"}'
+                    )
+                )
+            )
+        );
+
+        // Prepend data:application/json;based64, to data.
+        string memory finalTokenUri = string(
+            abi.encodePacked("data:application/json;base64,", json)
         );
 
         console.log("n------------------");
-        console.log(finalSvg);
+        console.log("finalTokenUri:", finalTokenUri);
         console.log("-------------------\n");
 
         // Mint NFT to sender
         _safeMint(msg.sender, newItemId);
 
         // Set NFT data
-        _setTokenURI(newItemId, "blah");
+        _setTokenURI(newItemId, finalTokenUri);
 
         // Increment counter to allow next NFT to be minted
         _tokenIds.increment();
