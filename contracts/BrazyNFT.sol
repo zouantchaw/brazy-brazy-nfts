@@ -14,6 +14,11 @@ contract BrazyNFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
+    // baseSvg variable that all NFTs can use
+    // Dynamic, can change words being displayed
+    string baseSvg =
+        "<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='xMinYMin meet' viewBox='0 0 350 350'><rect width='100%' height='100%'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' style='fill:#fff;font-family:serif;font-size:14px'></text></svg>";
+
     // Pass in NFTs token and symbol
     constructor() ERC721("COWNFT", "MOOOO") {
         console.log("Hello from smart contact");
