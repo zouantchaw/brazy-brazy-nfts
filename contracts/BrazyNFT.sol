@@ -49,6 +49,8 @@ contract BrazyNFT is ERC721URIStorage {
         "BlueEyes"
     ];
 
+    event NewEpicNFTMinted(address sender, uint256 tokenId);
+
     // Pass in NFTs token and symbol
     constructor() ERC721("COWNFT", "MOOOO") {
         console.log("Hello from smart contact");
@@ -155,5 +157,7 @@ contract BrazyNFT is ERC721URIStorage {
             newItemId,
             msg.sender
         );
+
+        emit NewEpicNFTMinted(msg.sender, newItemId);
     }
 }
