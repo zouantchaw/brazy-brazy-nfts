@@ -18,6 +18,9 @@ contract BrazyNFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
+    // array to hold token holders address
+    uint256[] public arr;
+
     // baseSvg variable that all NFTs can use
     // Dynamic, can change words being displayed
     string baseSvg =
@@ -99,10 +102,24 @@ contract BrazyNFT is ERC721URIStorage {
         return uint256(keccak256(abi.encodePacked(input)));
     }
 
+    // Appends address to arr array
+    function addAddressToArray(uint256 i) public {
+        arr.push(i);
+    }
+
     // When invoked, creates NFT for user
     function makeABrazyNFT() public {
+        // Make sure arr.length is not greater than 2
+        require(arr.length < 4, "Minting limit reached");
+
         // Get current tokenId
         uint256 newItemId = _tokenIds.current();
+
+        console.log("new item: ", newItemId);
+
+        console.log("arr length: ", arr.length);
+
+        // If _tokenIds is greater than one, end function
 
         // Get one word for each of three arrays.
         string memory first = pickRandomFirstWord(newItemId);
@@ -157,6 +174,8 @@ contract BrazyNFT is ERC721URIStorage {
             newItemId,
             msg.sender
         );
+
+        addAddressToArray(newItemId);
 
         emit NewEpicNFTMinted(msg.sender, newItemId);
     }
