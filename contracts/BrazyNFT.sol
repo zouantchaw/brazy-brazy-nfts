@@ -109,8 +109,8 @@ contract BrazyNFT is ERC721URIStorage {
 
     // When invoked, creates NFT for user
     function makeABrazyNFT() public {
-        // Make sure arr.length is not greater than 2
-        require(arr.length < 4, "Minting limit reached");
+        // Make sure arr.length is not greater than 30
+        require(arr.length < 29, "Minting limit reached");
 
         // Get current tokenId
         uint256 newItemId = _tokenIds.current();
